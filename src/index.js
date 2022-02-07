@@ -23,7 +23,17 @@ function checksExistsUserAccount(request, response, next) {
 }
 
 function checksCreateTodosUserAvailability(request, response, next) {
-  // Complete aqui
+  const { user } = request;
+
+  if (!user.pro) {
+    const countTodo = user.todos.length;
+
+    if (countTodo >= 10) {
+      return response.status(403).json({ error: "Você atingiu o limite do plano free, não é possível mais cadastrar!" });
+    }
+  }
+
+  return next();
 }
 
 function checksTodoExists(request, response, next) {
